@@ -891,6 +891,11 @@ namespace OpenMS
     }
   }
 
+// This function will provide coordinates for input transition. 
+// chrom_list contains list of pointers for empty chromatograms. coordinates is also an empty vector of coordinates for each chromatogram.
+// transition_exp_used contains peptide name, protein name. Is transition_exp_used one transition or many?
+// trafo_inverse has mapping from iRT to seconds. cp has further params for extracting chromatogram.
+// For example, function will fill one coordinate as : 400 Th, 785 Th, (1800 + 300)s, (1800 -300)s, id.
   void OpenSwathWorkflow::prepareExtractionCoordinates_(std::vector< OpenSwath::ChromatogramPtr > & chrom_list,
                                                         std::vector< ChromatogramExtractorAlgorithm::ExtractionCoordinates > & coordinates, 
                                                         const OpenSwath::LightTargetedExperiment & transition_exp_used, 
@@ -908,8 +913,8 @@ namespace OpenMS
       // Then correct the start/end positions and add the extra_rt_extract parameter
       prepare_coordinates_sub(chrom_list, coordinates, transition_exp_used, 0.0, ms1);
       for (std::vector< ChromatogramExtractor::ExtractionCoordinates >::iterator it = coordinates.begin(); it != coordinates.end(); ++it)
-      {
-        it->rt_start = trafo_inverse.apply(it->rt_start) - (cp.rt_extraction_window + cp.extra_rt_extract)/ 2.0;
+      {// iterator it parse through complete vector of coordinates and all transitions have RT end/start set to +/-300 seconds.
+        it->rt_start = trafo_inverse.apply(it->rt_start) - (cp.rt_extraction_window + cp.extra_rt_extract)/ 2.0; // trafo_inverse has mapping from iRT to seconds.
         it->rt_end = trafo_inverse.apply(it->rt_end) + (cp.rt_extraction_window + cp.extra_rt_extract)/ 2.0;
       }
     }
