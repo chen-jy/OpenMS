@@ -28,12 +28,12 @@ GzipIfstream.cpp
 GzipInputStream.cpp
 IBSpectraFile.cpp
 IdXMLFile.cpp
-IndexedMzMLFile.cpp
 IndexedMzMLFileLoader.cpp
 InspectInfile.cpp
 InspectOutfile.cpp
 KroenikFile.cpp
 LibSVMEncoder.cpp
+MRMFeaturePickerFile.cpp
 MRMFeatureQCFile.cpp
 MS2File.cpp
 MSNumpressCoder.cpp
