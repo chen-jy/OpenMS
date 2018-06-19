@@ -791,6 +791,9 @@ protected:
       cp_irt.rt_extraction_window = 900; // extract some substantial part of the RT range (should be covered by linear correction)
       cp_irt.rt_extraction_window = 600; // extract some substantial part of the RT range (should be covered by linear correction)
 
+      // bool estimateBestPeptides = irt_detection_param.getValue("estimateBestPeptides").toBool();
+      linear_irt.setValue("estimateBestPeptides", "true"); // pretty sure we want this
+
       ///////////////////////////////////
       // Get the secondary transformation (nonlinear)
       ///////////////////////////////////
