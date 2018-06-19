@@ -1084,6 +1084,11 @@ ${TOPP_BIN_PATH}/OpenSwathDecoyGenerator -test -in ${DATA_DIR_TOPP}/OpenSwathDec
 ${TOPP_BIN_PATH}/OpenSwathDecoyGenerator -test -in ${DATA_DIR_TOPP}/OpenSwathDecoyGenerator_input_3.TraML -out OpenSwathDecoyGenerator_3.TraML.tmp -out_type TraML -method pseudo-reverse -separate)
   add_test("TOPP_OpenSwathDecoyGenerator_test_3_out1" ${DIFF} -in1 OpenSwathDecoyGenerator_3.TraML.tmp -in2 ${DATA_DIR_TOPP}/OpenSwathDecoyGenerator_output_3.TraML)
   set_tests_properties("TOPP_OpenSwathDecoyGenerator_test_3_out1" PROPERTIES DEPENDS "TOPP_OpenSwathDecoyGenerator_test_3")
+  # test switchKR option
+  add_test("TOPP_OpenSwathDecoyGenerator_test_4"
+  ${TOPP_BIN_PATH}/OpenSwathDecoyGenerator -test -in ${DATA_DIR_TOPP}/OpenSwathDecoyGenerator_input_3.TraML -out OpenSwathDecoyGenerator_4.TraML.tmp -out_type TraML -method pseudo-reverse -switchKR "true" -separate)
+  add_test("TOPP_OpenSwathDecoyGenerator_test_4_out1" ${DIFF} -whitelist "id=" -in1 OpenSwathDecoyGenerator_4.TraML.tmp -in2 ${DATA_DIR_TOPP}/OpenSwathDecoyGenerator_output_4.TraML)
+  set_tests_properties("TOPP_OpenSwathDecoyGenerator_test_4_out1" PROPERTIES DEPENDS "TOPP_OpenSwathDecoyGenerator_test_4")
 
   # TargetedFileConverter : convert from and to different targeted files
   # Contains heavy and light transitions in 2 different notations
