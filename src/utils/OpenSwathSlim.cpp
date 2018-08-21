@@ -79,12 +79,12 @@ protected:
 
     registerStringOption_("rt_extraction_window", "<double>/auto", "auto", "Retention time extraction window", false, true);
     registerStringOption_("ion_mobility_window", "<double>/auto", "auto", "Extraction window in ion mobility dimension (in milliseconds). This is the full window size, e.g. a value of 10 milliseconds would extract 5 milliseconds on either side.", false);
-    registerStringOption_("mz_extraction_window", "<double>/auto", "auto", "MZ time extraction window in ppm", false, true);
+    registerStringOption_("mz_extraction_window", "<double>/auto", "auto", "mass-to-charge extraction window (in ppm)", false, true);
 
     registerStringOption_("mz_correction_function", "<name>", "none", "Use the retention time normalization peptide MS2 masses to perform a mass correction (linear, weighted by intensity linear or quadratic) of all spectra.", false, true);
     setValidStrings_("mz_correction_function", ListUtils::create<String>("none,regression_delta_ppm,unweighted_regression,weighted_regression,quadratic_regression,weighted_quadratic_regression,weighted_quadratic_regression_delta_ppm,quadratic_regression_delta_ppm"));
 
-    registerStringOption_("readOptions", "<name>", "workingInMemory", "Allows OpenSWATH to cache data to disk instead of keepign all data in memory (use cacheWorkingInMemory) in case you run out of memory. If you choose cacheWorkingInMemory, make sure to also set tempDirectory", false, true);
+    registerStringOption_("readOptions", "<name>", "workingInMemory", "Allows OpenSWATH to cache data to disk instead of keeping all data in memory (use cacheWorkingInMemory) in case you run out of memory. If you choose cacheWorkingInMemory, make sure to also set tempDirectory", false, true);
     setValidStrings_("readOptions", ListUtils::create<String>("workingInMemory,cacheWorkingInMemory"));
 
     registerStringOption_("tempDirectory", "<tmp>", "/tmp/", "Temporary directory to store cached files for example", false, true);
@@ -132,7 +132,7 @@ protected:
 
       p.setValue("alignmentMethod", "linear", "How to perform the alignment to the normalized RT space using anchor points. 'linear': perform linear regression (for few anchor points). 'interpolated': Interpolate between anchor points (for few, noise-free anchor points). 'lowess' Use local regression (for many, noisy anchor points). 'b_spline' use b splines for smoothing.");
       p.setValidStrings("alignmentMethod", ListUtils::create<String>("linear,interpolated,lowess,b_spline"));
-      p.setValue("lowess:span", 2.0/3, "Span parameter for lowess");
+      p.setValue("lowess:span", 0.05, "Span parameter for lowess");
       p.setMinFloat("lowess:span", 0.0);
       p.setMaxFloat("lowess:span", 1.0);
       p.setValue("b_spline:num_nodes", 5, "Number of nodes for b spline");
@@ -319,6 +319,9 @@ protected:
       wf.simpleExtractChromatograms(swath_maps, transition_exp_nl, chromatograms,
                                     trafo_rtnorm, cp_irt, false, load_into_memory);
 
+      irt_detection_param.setValue("alignmentMethod", "lowess");
+      irt_detection_param.setValue("estimateBestPeptides", "true");
+      irt_detection_param.setValue("MinBinsFilled", 7); // should we allow the user to set this?
       trafo_rtnorm = wf.RTNormalization(transition_exp_nl, chromatograms, min_rsq,
                                         min_coverage, feature_finder_param, irt_detection_param,
                                         swath_maps, mz_correction_function,
