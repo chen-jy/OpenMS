@@ -189,7 +189,7 @@
 			<UserParam type="float" name="var_isotope_correlation_score" value="0.97266651402879"/>
 			<UserParam type="float" name="var_isotope_overlap_score" value="0"/>
 			<UserParam type="float" name="var_massdev_score" value="1.37354439334282"/>
-			<UserParam type="float" name="var_massdev_score_weighted" value="1.18664964107839"/>
+			<UserParam type="float" name="var_massdev_score_weighted" value="1.3526146258446"/>
 			<UserParam type="float" name="var_bseries_score" value="0"/>
 			<UserParam type="float" name="var_yseries_score" value="0"/>
 			<UserParam type="float" name="var_dotprod_score" value="0.81994891194234"/>

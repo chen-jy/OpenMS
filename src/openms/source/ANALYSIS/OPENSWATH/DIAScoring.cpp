@@ -56,7 +56,7 @@
 
 #include <boost/bind.hpp>
 
-// #define  MRMSCORING_TESTING
+// #define MRMSCORING_TESTING
 
 const double C13C12_MASSDIFF_U = 1.0033548;
 
@@ -232,11 +232,14 @@ namespace OpenMS
       ppm_score_weighted += diff_ppm * normalized_library_intensity[k];
       weights += normalized_library_intensity[k];
 #ifdef MRMSCORING_TESTING
-      std::cout << " weighted int of the peak is " << mz << " diff is in ppm " << diff_ppm << " thus append " << diff_ppm * diff_ppm << " or weighted " << diff_ppm * normalized_library_intensity[k] << std::endl;
+      std::cout << " weighted int of the peak is " << mz << " diff is in ppm " << diff_ppm << " thus append " << diff_ppm * diff_ppm << " or weighted " << 
+        diff_ppm * normalized_library_intensity[k] << " with a weight of " << normalized_library_intensity[k] << std::endl;
 #endif
     }
+
+    // Generally the weights sum up to one, however we may not have found
+    // signal for every transition.
     ppm_score_weighted /= weights;
-    ppm_score_weighted /= transitions.size();
   }
 
   bool DIAScoring::dia_ms1_massdiff_score(double precursor_mz, SpectrumPtrType spectrum,
