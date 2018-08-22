@@ -90,42 +90,6 @@ namespace OpenMS
     coord.id = transition.getNativeID();
   }
 
-
-  const TargetedExperimentHelper::PeptideCompound* getPeptideHelperMS2_(const OpenMS::TargetedExperiment& transition_exp_used,
-                                                                        const OpenMS::ReactionMonitoringTransition& transition,
-                                                                        bool do_peptides)
-  {
-    OPENMS_PRECONDITION(IMPLIES(do_peptides, !transition.getPeptideRef().empty()), "PeptideRef cannot be empty for peptides")
-    OPENMS_PRECONDITION(IMPLIES(!do_peptides, !transition.getCompoundRef().empty()), "CompoundRef cannot be empty for compounds")
-
-    if (do_peptides)
-    {
-      return &transition_exp_used.getPeptideByRef(transition.getPeptideRef()); 
-    }
-    else
-    {
-      return &transition_exp_used.getCompoundByRef(transition.getCompoundRef()); 
-    }
-  }
-
-  const TargetedExperimentHelper::PeptideCompound* getPeptideHelperMS1_(const OpenMS::TargetedExperiment & transition_exp_used,
-                                                                        Size i,
-                                                                        bool do_peptides)
-  {
-    OPENMS_PRECONDITION(i >= 0, "Index i must be larger than zero")
-    OPENMS_PRECONDITION(IMPLIES(do_peptides, i < transition_exp_used.getPeptides().size()), "Index i must be smaller than the number of peptides")
-    OPENMS_PRECONDITION(IMPLIES(!do_peptides, i < transition_exp_used.getCompounds().size()), "Index i must be smaller than the number of compounds")
-
-    if (do_peptides)
-    {
-      return &transition_exp_used.getPeptides()[i];
-    }
-    else
-    {
-      return &transition_exp_used.getCompounds()[i];
-    }
-  }
-
   void ChromatogramExtractor::prepare_coordinates(std::vector< OpenSwath::ChromatogramPtr > & output_chromatograms,
                                                   std::vector< ExtractionCoordinates > & coordinates,
                                                   const OpenSwath::LightTargetedExperiment & transition_exp_used,
@@ -262,7 +226,9 @@ namespace OpenMS
 
       if (ms1) 
       {
-        pep = getPeptideHelperMS1_(transition_exp_used, i, have_peptides);
+        pep = ( have_peptides ?
+            (const TargetedExperimentHelper::PeptideCompound*)&transition_exp_used.getPeptides()[i] :
+            (const TargetedExperimentHelper::PeptideCompound*)&transition_exp_used.getCompounds()[i] );
         if (!populateMS1Transition(pep2tr, *pep, coord))
         {
           // Catch cases where a compound has no transitions
@@ -273,7 +239,7 @@ namespace OpenMS
       else
       {
         transition = transition_exp_used.getTransitions()[i];
-        pep = getPeptideHelperMS2_(transition_exp_used, transition, have_peptides);
+        pep = tr2pep[transition.getPeptideRef()];
         populateMS2Transition(transition, coord);
       }
 
