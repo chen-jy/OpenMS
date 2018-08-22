@@ -55,7 +55,7 @@ namespace OpenMS
   namespace DIAHelpers
   {
 
-    void fitSplineToPeak(OpenSwath::SpectrumPtr spectrum, const double left, const double right,
+    void fitSplineToPeak(OpenSwath::SpectrumPtr /* spectrum */, const double /* left */, const double /* right */,
                          const std::vector<double> & newmz, const std::vector<double> & newint,
                          double& max_peak_mz )
     {

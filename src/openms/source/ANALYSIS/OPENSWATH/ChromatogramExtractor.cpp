@@ -158,7 +158,7 @@ namespace OpenMS
 
       if (ms1 && ms1_isotopes > 0)
       {
-        for (Size k = 1; k <= ms1_isotopes; k++)
+        for (int k = 1; k <= ms1_isotopes; k++)
         {
           OpenSwath::ChromatogramPtr s(new OpenSwath::Chromatogram);
           output_chromatograms.push_back(s);
@@ -275,7 +275,7 @@ namespace OpenMS
 
       if (ms1 && ms1_isotopes > 0 && false)
       {
-        for (Size k = 1; k <= ms1_isotopes; k++)
+        for (int k = 1; k <= ms1_isotopes; k++)
         {
           OpenSwath::ChromatogramPtr s(new OpenSwath::Chromatogram);
           output_chromatograms.push_back(s);

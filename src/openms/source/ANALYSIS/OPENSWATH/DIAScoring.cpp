@@ -266,8 +266,8 @@ namespace OpenMS
       {
         if (use_spline_)
         {
-          double central_peak_mz = left - 1;
-          double central_peak_int = -1;
+          // double central_peak_mz = left - 1;
+          // double central_peak_int = -1;
 
           std::vector<double> newmz;
           std::vector<double> newint;
